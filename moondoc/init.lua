@@ -132,10 +132,10 @@ parse_exports = function(code, opts)
         do
           local export_value = locals[local_name]
           if export_value then
-            out.exports[export_name] = format_stm(export_value, {
+            table.insert(out.exports, format_stm(export_value, {
               name = export_name,
               line_number = export_value[-1] and pos_to_line(code, export_value[-1])
-            })
+            }))
           end
         end
         _continue_0 = true

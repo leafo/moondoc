@@ -83,7 +83,7 @@ parse_exports = (code, opts={}) ->
       local_name = value[2]
 
       if export_value = locals[local_name]
-        out.exports[export_name] = format_stm export_value, {
+        table.insert out.exports, format_stm export_value, {
           name: export_name
           line_number: export_value[-1] and pos_to_line code, export_value[-1]
         }
