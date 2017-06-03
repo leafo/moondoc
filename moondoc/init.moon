@@ -55,12 +55,9 @@ format_stm = (node, more_props) ->
 
     out
 
-parse_exports = (file) ->
-  f = assert io.open file
-  file = f\read "*a"
-  f\close!
 
-  tree = assert parse.string file
+parse_exports = (code, opts={}) ->
+  tree = assert parse.string code
   -- things available for export indexed by their name
   locals = {}
 
@@ -84,12 +81,11 @@ parse_exports = (file) ->
       export_name = key[2]
       continue unless is_ref value
       local_name = value[2]
-      print "export", export_name, local_name
 
       if export_value = locals[local_name]
         out.exports[export_name] = format_stm export_value, {
           name: export_name
-          line_number: export_value[-1] and pos_to_line file, export_value[-1]
+          line_number: export_value[-1] and pos_to_line code, export_value[-1]
         }
   else
     -- exporting single thing
