@@ -8,5 +8,6 @@ local: build
 
 build:
 	moonc moondoc
-
+	moonc -o bin/moondoc bin/moondoc.moon 
+	chmod +x bin/moondoc
 

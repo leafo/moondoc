@@ -22,5 +22,8 @@ build = {
   type = "builtin",
   modules = {
     ["moondoc"] = "moondoc/init.lua",
+  },
+  install = {
+    bin = { "bin/moondoc.moon" }
   }
 }
