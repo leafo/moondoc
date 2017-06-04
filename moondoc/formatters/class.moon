@@ -1,3 +1,5 @@
+import format_stm from require "moondoc.format"
+
 import types from require "tableshape"
 is_props = types.shape { "props" }, open: true
 is_key_literal = types.shape { "key_literal", types.string }, open: true
@@ -20,9 +22,6 @@ is_class_method = types.shape {
     is_function
   }
 }
-
-
-import format_stm from require "moondoc.format"
 
 (node) ->
   -- TODO: extract fields

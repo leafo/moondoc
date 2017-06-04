@@ -1,3 +1,5 @@
+local format_stm
+format_stm = require("moondoc.format").format_stm
 local types
 types = require("tableshape").types
 local is_props = types.shape({
@@ -36,8 +38,6 @@ local is_class_method = types.shape({
     is_function
   })
 })
-local format_stm
-format_stm = require("moondoc.format").format_stm
 return function(node)
   local contents = node[4]
   local methods = { }
