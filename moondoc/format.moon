@@ -6,8 +6,7 @@ format_stm = (node, more_props) ->
     "invalid node type: #{type node_type}"
 
   local formatter
-  pcall ->
-    formatter = require "moondoc.formatters.#{node_type}"
+  formatter = require "moondoc.formatters.#{node_type}"
 
   return unless formatter
   out = formatter node

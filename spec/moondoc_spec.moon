@@ -15,6 +15,8 @@ class Something
         {
           type: "class"
           name: "Something"
+          methods: {}
+          class_methods: {}
           line_number: 2
         }
 
