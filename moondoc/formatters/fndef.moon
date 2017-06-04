@@ -1,0 +1,4 @@
+(node) ->
+  {
+    type: "function"
+  }

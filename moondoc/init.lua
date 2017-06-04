@@ -3,6 +3,8 @@ local pos_to_line
 pos_to_line = require("moonscript.util").pos_to_line
 local types
 types = require("tableshape").types
+local format_stm
+format_stm = require("moondoc.format").format_stm
 local t
 t = function(k)
   return types.shape(k, {
@@ -62,33 +64,6 @@ assigns_by_name = function(assign)
     end
   end
   return assigns
-end
-local format_stm
-format_stm = function(node, more_props)
-  if not (node) then
-    return 
-  end
-  local out
-  local _exp_0 = node[1]
-  if "fndef" == _exp_0 then
-    out = {
-      type = "function",
-      name = name
-    }
-  elseif "class" == _exp_0 then
-    out = {
-      type = "class",
-      name = name
-    }
-  end
-  if out then
-    if more_props then
-      for k, v in pairs(more_props) do
-        out[k] = v
-      end
-    end
-    return out
-  end
 end
 local parse_exports
 parse_exports = function(code, opts)

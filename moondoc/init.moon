@@ -3,6 +3,7 @@ parse = require "moonscript.parse"
 
 import pos_to_line from require "moonscript.util"
 import types from require "tableshape"
+import format_stm from require "moondoc.format"
 
 t = (k) -> types.shape k, open: true
 
@@ -33,28 +34,6 @@ assigns_by_name = (assign) ->
     assigns[name] = value
 
   assigns
-
-format_stm = (node, more_props) ->
-  return unless node
-  out = switch node[1]
-    when "fndef"
-      {
-        type: "function"
-        :name
-      }
-    when "class"
-      {
-        type: "class"
-        :name
-      }
-
-  if out
-    if more_props
-      for k,v in pairs more_props
-        out[k] = v
-
-    out
-
 
 parse_exports = (code, opts={}) ->
   tree = assert parse.string code
