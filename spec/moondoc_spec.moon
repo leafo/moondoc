@@ -23,11 +23,33 @@ class Something
         {
           type: "function"
           name: "f"
+          arguments: {}
           line_number: 1
         }
       }
 
     }, out
 
-
+  it "parses function with arguments", ->
+    out = parse_exports [[
+cool = (a,b,c=5)->
+{out: cool}
+]]
+    assert.same {
+      exports: {
+        {
+          type: "function"
+          name: "out"
+          line_number: 1
+          arguments: {
+            {name: "a"}
+            {name: "b"}
+            {name: "c", default: {
+              type: "number"
+              value: "5"
+            }}
+          }
+        }
+      }
+    }, out
 
