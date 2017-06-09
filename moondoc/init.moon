@@ -17,6 +17,15 @@ ref_to_string = (r) ->
   assert type(r[2]) == "string", "don't know how to convert ref"
   r[2]
 
+class Buffer
+  new: (@buffer) =>
+
+  pos_to_line: (pos) =>
+    return nil unless pos
+    pos_to_line @buffer, pos
+
+  get_proceeding_comment: (pos) =>
+
 assigns_by_name = (assign) ->
   assigns = {}
 
@@ -36,6 +45,8 @@ assigns_by_name = (assign) ->
   assigns
 
 parse_exports = (code, opts={}) ->
+  buffer = Buffer code
+
   tree = assert parse.string code
   -- things available for export indexed by their name
   locals = {}
@@ -64,7 +75,7 @@ parse_exports = (code, opts={}) ->
       if export_value = locals[local_name]
         formatted = format_stm export_value, {
           name: export_name
-          line_number: export_value[-1] and pos_to_line code, export_value[-1]
+          line_number: buffer\pos_to_line export_value[-1]
         }
 
         continue unless formatted
