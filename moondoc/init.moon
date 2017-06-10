@@ -1,6 +1,8 @@
 
 parse = require "moonscript.parse"
 
+loadkit = require "loadkit"
+
 import pos_to_line from require "moonscript.util"
 import types from require "tableshape"
 import format_stm from require "moondoc.format"
@@ -87,5 +89,19 @@ parse_exports = (code, opts={}) ->
 
   out
 
-{ :parse_exports }
+
+parse_module = (module_name) ->
+  loader = loadkit.make_loader "moon", nil, "."
+  fname = loader module_name
+
+  f = assert io.open fname
+  file = f\read "*a"
+  f\close!
+
+  out = parse_exports file
+  out.name = module_name
+  out
+
+
+{ :parse_exports, :parse_module }
 

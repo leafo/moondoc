@@ -1,4 +1,5 @@
 local parse = require("moonscript.parse")
+local loadkit = require("loadkit")
 local pos_to_line
 pos_to_line = require("moonscript.util").pos_to_line
 local types
@@ -37,6 +38,36 @@ ref_to_string = function(r)
   assert(type(r[2]) == "string", "don't know how to convert ref")
   return r[2]
 end
+local Buffer
+do
+  local _class_0
+  local _base_0 = {
+    pos_to_line = function(self, pos)
+      if not (pos) then
+        return nil
+      end
+      return pos_to_line(self.buffer, pos)
+    end,
+    get_proceeding_comment = function(self, pos) end
+  }
+  _base_0.__index = _base_0
+  _class_0 = setmetatable({
+    __init = function(self, buffer)
+      self.buffer = buffer
+    end,
+    __base = _base_0,
+    __name = "Buffer"
+  }, {
+    __index = _base_0,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  Buffer = _class_0
+end
 local assigns_by_name
 assigns_by_name = function(assign)
   local assigns = { }
@@ -70,6 +101,7 @@ parse_exports = function(code, opts)
   if opts == nil then
     opts = { }
   end
+  local buffer = Buffer(code)
   local tree = assert(parse.string(code))
   local locals = { }
   for _index_0 = 1, #tree do
@@ -109,7 +141,7 @@ parse_exports = function(code, opts)
           if export_value then
             local formatted = format_stm(export_value, {
               name = export_name,
-              line_number = export_value[-1] and pos_to_line(code, export_value[-1])
+              line_number = buffer:pos_to_line(export_value[-1])
             })
             if not (formatted) then
               _continue_0 = true
@@ -129,6 +161,18 @@ parse_exports = function(code, opts)
   end
   return out
 end
+local parse_module
+parse_module = function(module_name)
+  local loader = loadkit.make_loader("moon", nil, ".")
+  local fname = loader(module_name)
+  local f = assert(io.open(fname))
+  local file = f:read("*a")
+  f:close()
+  local out = parse_exports(file)
+  out.name = module_name
+  return out
+end
 return {
-  parse_exports = parse_exports
+  parse_exports = parse_exports,
+  parse_module = parse_module
 }
