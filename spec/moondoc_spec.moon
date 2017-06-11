@@ -1,7 +1,11 @@
 
 
 describe "parse_exports", ->
-  import parse_exports from require "moondoc"
+  import parse_exports, parse_module from require "moondoc"
+
+  it "loads module from path", ->
+    parse_module "moondoc.init"
+
 
   it "parses exports with table and function", ->
     out = parse_exports [[

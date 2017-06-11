@@ -91,8 +91,8 @@ parse_exports = (code, opts={}) ->
 
 
 parse_module = (module_name) ->
-  loader = loadkit.make_loader "moon", nil, "."
-  fname = loader module_name
+  loader = loadkit.make_loader "moon", nil, "./?.lua"
+  fname = assert loader module_name
 
   f = assert io.open fname
   file = f\read "*a"
@@ -101,7 +101,6 @@ parse_module = (module_name) ->
   out = parse_exports file
   out.name = module_name
   out
-
 
 { :parse_exports, :parse_module }
 

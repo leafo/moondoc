@@ -15,7 +15,7 @@ description = {
 dependencies = {
   "lua ~> 5.1",
   "moonscript",
-	"loadkit",
+  "loadkit",
   "sitegen",
 }
 

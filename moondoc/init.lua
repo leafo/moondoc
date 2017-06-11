@@ -163,8 +163,8 @@ parse_exports = function(code, opts)
 end
 local parse_module
 parse_module = function(module_name)
-  local loader = loadkit.make_loader("moon", nil, ".")
-  local fname = loader(module_name)
+  local loader = loadkit.make_loader("moon", nil, "./?.lua")
+  local fname = assert(loader(module_name))
   local f = assert(io.open(fname))
   local file = f:read("*a")
   f:close()
