@@ -23,6 +23,13 @@ build = {
   type = "builtin",
   modules = {
     ["moondoc"] = "moondoc/init.lua",
+    ["moondoc.cmd"] = "moondoc/cmd.lua",
+    ["moondoc.format"] = "moondoc/format.lua",
+    ["moondoc.formatters.class"] = "moondoc/formatters/class.lua",
+    ["moondoc.formatters.fndef"] = "moondoc/formatters/fndef.lua",
+    ["moondoc.formatters.number"] = "moondoc/formatters/number.lua",
+    ["moondoc.formatters.string"] = "moondoc/formatters/string.lua",
+    ["moondoc.formatters.table"] = "moondoc/formatters/table.lua",
   },
   install = {
     bin = { "bin/moondoc" }
