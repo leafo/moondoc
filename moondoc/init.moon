@@ -89,10 +89,12 @@ parse_exports = (code, opts={}) ->
 
   out
 
-
-parse_module = (module_name) ->
+filename_for_module = (module_name) ->
   loader = loadkit.make_loader "moon", nil, "./?.lua"
-  fname = assert loader module_name
+  assert loader module_name
+
+parse_module = (module_name, fname) ->
+  fname or= filename_for_module module_name
 
   f = assert io.open fname
   file = f\read "*a"
@@ -102,5 +104,16 @@ parse_module = (module_name) ->
   out.name = module_name
   out
 
-{ :parse_exports, :parse_module }
+shell_escape = (str) ->
+  str\gsub "'", "''"
+
+scan_for_modules = (dir=".") ->
+  f = assert io.popen "find '#{shell_escape dir}' -type f -iname '*.moon' -print0"
+  files = f\read "*a"
+
+  return for file in files\gmatch "[^%z]+"
+    module_name = file\gsub("%.moon$", "")\gsub "/", "."
+    { file, module_name }
+
+{ :parse_exports, :parse_module, :scan_for_modules }
 

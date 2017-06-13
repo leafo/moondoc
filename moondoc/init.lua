@@ -161,10 +161,14 @@ parse_exports = function(code, opts)
   end
   return out
 end
-local parse_module
-parse_module = function(module_name)
+local filename_for_module
+filename_for_module = function(module_name)
   local loader = loadkit.make_loader("moon", nil, "./?.lua")
-  local fname = assert(loader(module_name))
+  return assert(loader(module_name))
+end
+local parse_module
+parse_module = function(module_name, fname)
+  fname = fname or filename_for_module(module_name)
   local f = assert(io.open(fname))
   local file = f:read("*a")
   f:close()
@@ -172,7 +176,34 @@ parse_module = function(module_name)
   out.name = module_name
   return out
 end
+local shell_escape
+shell_escape = function(str)
+  return str:gsub("'", "''")
+end
+local scan_for_modules
+scan_for_modules = function(dir)
+  if dir == nil then
+    dir = "."
+  end
+  local f = assert(io.popen("find '" .. tostring(shell_escape(dir)) .. "' -type f -iname '*.moon' -print0"))
+  local files = f:read("*a")
+  return (function()
+    local _accum_0 = { }
+    local _len_0 = 1
+    for file in files:gmatch("[^%z]+") do
+      local module_name = file:gsub("%.moon$", ""):gsub("/", ".")
+      local _value_0 = {
+        file,
+        module_name
+      }
+      _accum_0[_len_0] = _value_0
+      _len_0 = _len_0 + 1
+    end
+    return _accum_0
+  end)()
+end
 return {
   parse_exports = parse_exports,
-  parse_module = parse_module
+  parse_module = parse_module,
+  scan_for_modules = scan_for_modules
 }
