@@ -46,6 +46,12 @@ assigns_by_name = (assign) ->
 
   assigns
 
+-- a quick helper to test format statements
+parse_expresion = (code) ->
+  tree = assert parse.string code
+  exp = assert unpack(tree), "missing expression"
+  format_stm exp
+
 parse_exports = (code, opts={}) ->
   buffer = Buffer code
 
@@ -126,5 +132,5 @@ scan_for_modules = (dir=".") ->
 
   out
 
-{ :parse_exports, :parse_module, :scan_for_modules }
+{ :parse_exports, :parse_expresion, :parse_module, :scan_for_modules }
 

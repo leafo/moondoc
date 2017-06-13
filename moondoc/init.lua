@@ -96,6 +96,12 @@ assigns_by_name = function(assign)
   end
   return assigns
 end
+local parse_expresion
+parse_expresion = function(code)
+  local tree = assert(parse.string(code))
+  local exp = assert(unpack(tree), "missing expression")
+  return format_stm(exp)
+end
 local parse_exports
 parse_exports = function(code, opts)
   if opts == nil then
@@ -213,6 +219,7 @@ scan_for_modules = function(dir)
 end
 return {
   parse_exports = parse_exports,
+  parse_expresion = parse_expresion,
   parse_module = parse_module,
   scan_for_modules = scan_for_modules
 }
