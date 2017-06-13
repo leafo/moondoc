@@ -111,9 +111,19 @@ scan_for_modules = (dir=".") ->
   f = assert io.popen "find '#{shell_escape dir}' -type f -iname '*.moon' -print0"
   files = f\read "*a"
 
-  return for file in files\gmatch "[^%z]+"
-    module_name = file\gsub("%.moon$", "")\gsub "/", "."
+  out = for file in files\gmatch "[^%z]+"
+    module_name = file\gsub("^%./", "")\gsub("%.moon$", "")\gsub "/", "."
+
+    -- trim init module
+    if module_name\match "%.init$"
+      module_name = module_name\sub 1, -(#".init" + 1)
+
     { file, module_name }
+
+  table.sort out, (a,b) ->
+    a[2] < b[2]
+
+  out
 
 { :parse_exports, :parse_module, :scan_for_modules }
 

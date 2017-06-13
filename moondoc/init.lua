@@ -187,11 +187,15 @@ scan_for_modules = function(dir)
   end
   local f = assert(io.popen("find '" .. tostring(shell_escape(dir)) .. "' -type f -iname '*.moon' -print0"))
   local files = f:read("*a")
-  return (function()
+  local out
+  do
     local _accum_0 = { }
     local _len_0 = 1
     for file in files:gmatch("[^%z]+") do
-      local module_name = file:gsub("%.moon$", ""):gsub("/", ".")
+      local module_name = file:gsub("^%./", ""):gsub("%.moon$", ""):gsub("/", ".")
+      if module_name:match("%.init$") then
+        module_name = module_name:sub(1, -(#".init" + 1))
+      end
       local _value_0 = {
         file,
         module_name
@@ -199,8 +203,12 @@ scan_for_modules = function(dir)
       _accum_0[_len_0] = _value_0
       _len_0 = _len_0 + 1
     end
-    return _accum_0
-  end)()
+    out = _accum_0
+  end
+  table.sort(out, function(a, b)
+    return a[2] < b[2]
+  end)
+  return out
 end
 return {
   parse_exports = parse_exports,
