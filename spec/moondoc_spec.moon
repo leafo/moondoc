@@ -27,6 +27,24 @@ describe "parse_expresion", ->
       }
     }, parse_expresion [[(a,b,c=5) ->]]
 
+  it "parses class", ->
+    assert.same {
+      type: "class"
+      class_methods: {}
+      methods: {
+        {
+          name: "new"
+          type: "method"
+          arguments: {
+            {name: "a"}
+          }
+        }
+      }
+    }, parse_expresion [[
+class Something
+  new: (a) =>
+]]
+
 describe "parse_module", ->
   import parse_module, parse_module_by_name from require "moondoc"
 
