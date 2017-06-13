@@ -52,7 +52,7 @@ parse_expresion = (code) ->
   exp = assert unpack(tree), "missing expression"
   format_stm exp
 
-parse_exports = (code, opts={}) ->
+parse_module = (code, opts={}) ->
   buffer = Buffer code
 
   tree = assert parse.string code
@@ -100,14 +100,14 @@ filename_for_module = (module_name) ->
   loader = loadkit.make_loader "moon", nil, "./?.lua"
   assert loader module_name
 
-parse_module = (module_name, fname) ->
+parse_module_by_name = (module_name, fname) ->
   fname or= filename_for_module module_name
 
   f = assert io.open fname
   file = f\read "*a"
   f\close!
 
-  out = parse_exports file
+  out = parse_module file
   out.name = module_name
   out
 
@@ -132,5 +132,5 @@ scan_for_modules = (dir=".") ->
 
   out
 
-{ :parse_exports, :parse_expresion, :parse_module, :scan_for_modules }
+{ :parse_module, :parse_expresion, :parse_module_by_name, :scan_for_modules }
 

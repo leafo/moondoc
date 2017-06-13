@@ -1,4 +1,6 @@
 
+import types from require "tableshape"
+
 describe "parse_expresion", ->
   import parse_expresion from require "moondoc"
 
@@ -25,16 +27,19 @@ describe "parse_expresion", ->
       }
     }, parse_expresion [[(a,b,c=5) ->]]
 
-
-describe "parse_exports", ->
-  import parse_exports, parse_module from require "moondoc"
+describe "parse_module", ->
+  import parse_module, parse_module_by_name from require "moondoc"
 
   it "loads module from path", ->
-    parse_module "moondoc.init"
+    out = parse_module_by_name "moondoc.init"
+    s = types.shape {
+      name: "moondoc.init"
+    }, open: true
+    assert s out
 
   describe "module types", ->
     it "loads table module", ->
-      out = parse_exports [[{}]]
+      out = parse_module [[{}]]
       assert.same {
         exports: {}
         type: "table"
@@ -45,7 +50,7 @@ describe "parse_exports", ->
     it "loads expression module", -> pending "todo"
 
   it "parses exports with table and function", ->
-    out = parse_exports [[
+    out = parse_module [[
 f = ->
 class Something
 {:Something, :f}
@@ -73,7 +78,7 @@ class Something
     }, out
 
   it "parses function with arguments", ->
-    out = parse_exports [[
+    out = parse_module [[
 cool = (a,b,c=5)->
 {out: cool}
 ]]
