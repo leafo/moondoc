@@ -6,6 +6,17 @@ describe "parse_exports", ->
   it "loads module from path", ->
     parse_module "moondoc.init"
 
+  describe "module types", ->
+    it "loads table module", ->
+      out = parse_exports [[{}]]
+      assert.same {
+        exports: {}
+        type: "table"
+      }, out
+
+    it "loads class module", ->
+    it "loads value module", ->
+    it "loads expression module", ->
 
   it "parses exports with table and function", ->
     out = parse_exports [[
@@ -15,6 +26,7 @@ class Something
 ]]
     
     assert.same {
+      type: "table"
       exports: {
         {
           type: "class"
@@ -40,6 +52,7 @@ cool = (a,b,c=5)->
 {out: cool}
 ]]
     assert.same {
+      type: "table"
       exports: {
         {
           type: "function"

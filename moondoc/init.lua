@@ -118,6 +118,7 @@ parse_exports = function(code, opts)
   local out = { }
   local last = tree[#tree]
   if is_table(last) then
+    out.type = "table"
     out.exports = { }
     local _list_0 = last[2]
     for _index_0 = 1, #_list_0 do

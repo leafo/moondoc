@@ -67,6 +67,7 @@ parse_exports = (code, opts={}) ->
   last = tree[#tree]
 
   if is_table last
+    out.type = "table"
     out.exports = {}
     for {key,value} in *last[2]
       continue unless is_key_literal key
