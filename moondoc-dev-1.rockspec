@@ -25,6 +25,6 @@ build = {
     ["moondoc"] = "moondoc/init.lua",
   },
   install = {
-    bin = { "bin/moondoc.moon" }
+    bin = { "bin/moondoc" }
   }
 }
