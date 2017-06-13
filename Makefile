@@ -8,6 +8,7 @@ local: build
 
 build:
 	moonc moondoc.moon moondoc
-	moonc -o bin/moondoc bin/moondoc.moon 
+	echo '#!/usr/bin/env lua' > bin/moondoc
+	moonc -p bin/moondoc.moon >> bin/moondoc
 	chmod +x bin/moondoc
 

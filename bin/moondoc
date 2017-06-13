@@ -1,1 +1,2 @@
-
+#!/usr/bin/env lua
+return require("moondoc.cmd").run(...)
