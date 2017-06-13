@@ -1,4 +1,30 @@
 
+describe "parse_expresion", ->
+  import parse_expresion from require "moondoc"
+
+  it "parses function", ->
+    assert.same {
+      type: "function"
+      arguments: {
+        {name: "a"}
+        {name: "b"}
+      }
+    }, parse_expresion [[(a,b) ->]]
+
+  it "parses function with argument defaults", ->
+    assert.same {
+      type: "function"
+      type: "function"
+      arguments: {
+        {name: "a"}
+        {name: "b"}
+        {name: "c", default: {
+          type: "number"
+          value: "5"
+        }}
+      }
+    }, parse_expresion [[(a,b,c=5) ->]]
+
 
 describe "parse_exports", ->
   import parse_exports, parse_module from require "moondoc"
@@ -17,18 +43,6 @@ describe "parse_exports", ->
     it "loads class module", -> pending "todo"
     it "loads value module", -> pending "todo"
     it "loads expression module", -> pending "todo"
-
-  describe "expressions", ->
-    import parse_expresion from require "moondoc"
-
-    it "parses function", ->
-      assert.same {
-        type: "function"
-        arguments: {
-          {name: "a"}
-          {name: "b"}
-        }
-      }, parse_expresion [[(a,b) ->]]
 
   it "parses exports with table and function", ->
     out = parse_exports [[
