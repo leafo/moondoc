@@ -48,6 +48,13 @@ local actions = {
       print(mod)
     end
   end,
+  module_exports = function(args, flags)
+    local parse_module_by_name
+    parse_module_by_name = require("moondoc").parse_module_by_name
+    local mod_name = unpack(args) or error("Missing module name")
+    local data = parse_module_by_name(mod_name)
+    return require("moon").p(data)
+  end,
   help = function(self) end
 }
 local run

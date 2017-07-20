@@ -21,6 +21,12 @@ actions = {
     for {fname, mod} in *scan_for_modules path
       print mod
 
+  module_exports: (args, flags) ->
+    import parse_module_by_name from require "moondoc"
+    mod_name = unpack(args) or error "Missing module name"
+    data = parse_module_by_name mod_name
+    require("moon").p data
+
   help: =>
 
 }
