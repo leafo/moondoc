@@ -102,8 +102,8 @@ parse_expresion = function(code)
   local exp = assert(unpack(tree), "missing expression")
   return format_stm(exp)
 end
-local parse_exports
-parse_exports = function(code, opts)
+local parse_module
+parse_module = function(code, opts)
   if opts == nil then
     opts = { }
   end
@@ -173,13 +173,13 @@ filename_for_module = function(module_name)
   local loader = loadkit.make_loader("moon", nil, "./?.lua")
   return assert(loader(module_name))
 end
-local parse_module
-parse_module = function(module_name, fname)
+local parse_module_by_name
+parse_module_by_name = function(module_name, fname)
   fname = fname or filename_for_module(module_name)
   local f = assert(io.open(fname))
   local file = f:read("*a")
   f:close()
-  local out = parse_exports(file)
+  local out = parse_module(file)
   out.name = module_name
   return out
 end
@@ -218,8 +218,8 @@ scan_for_modules = function(dir)
   return out
 end
 return {
-  parse_exports = parse_exports,
-  parse_expresion = parse_expresion,
   parse_module = parse_module,
+  parse_expresion = parse_expresion,
+  parse_module_by_name = parse_module_by_name,
   scan_for_modules = scan_for_modules
 }

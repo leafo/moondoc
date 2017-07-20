@@ -28,6 +28,7 @@ build = {
     ["moondoc.formatters.class"] = "moondoc/formatters/class.lua",
     ["moondoc.formatters.fndef"] = "moondoc/formatters/fndef.lua",
     ["moondoc.formatters.number"] = "moondoc/formatters/number.lua",
+    ["moondoc.formatters.self"] = "moondoc/formatters/self.lua",
     ["moondoc.formatters.string"] = "moondoc/formatters/string.lua",
     ["moondoc.formatters.table"] = "moondoc/formatters/table.lua",
   },
